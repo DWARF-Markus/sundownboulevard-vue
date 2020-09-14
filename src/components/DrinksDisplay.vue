@@ -1,7 +1,12 @@
 <template>
   <div class="drinks-container">
     <div v-for="drink in drinks" :key="drink.id">
-      <Drink :data="drink" />
+      <div v-if="selectedDrinks.includes(parseInt(drink.id))">
+        <Drink :selected="true" :amount="formattedSelectedDrinks[drink.id]" :data="drink" />
+      </div>
+      <div v-else>
+        <Drink :data="drink" />
+      </div>
     </div>
   </div>
 </template>
@@ -23,11 +28,13 @@ export default {
   },
   data() {
     return {
-      drinks: []
+      drinks: [],
+      selectedDrinks: [],
+      formattedSelectedDrinks: []
     };
   },
   computed: {
-    ...mapGetters(["getDrinks"])
+    ...mapGetters(["getDrinks", "getSelectedDrinks"])
   },
   created() {
     this.handleDrinksFetch();
@@ -35,6 +42,20 @@ export default {
   watch: {
     getDrinks(value) {
       this.drinks = value;
+      this.selectedDrinks = this.getSelectedDrinks;
+
+      const obj = {};
+
+      for (let i = 0; i < this.selectedDrinks.length; ++i) {
+        if (!obj[this.selectedDrinks[i]]) {
+          obj[this.selectedDrinks[i]] = 0;
+          ++obj[this.selectedDrinks[i]];
+        } else {
+          ++obj[this.selectedDrinks[i]];
+        }
+      }
+
+      this.formattedSelectedDrinks = obj;
     }
   }
 };

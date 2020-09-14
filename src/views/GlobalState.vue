@@ -23,6 +23,10 @@
       Drinks count:
       <b>{{ getDrinks.length }}</b>
     </p>
+    <p class="pt-1">
+      Drinks selected:
+      <b>{{ getSelectedDrinks }}</b>
+    </p>
   </div>
 </template>
 
@@ -37,7 +41,8 @@ export default {
       "getEmail",
       "getStep",
       "getDish",
-      "getDrinks"
+      "getDrinks",
+      "getSelectedDrinks"
     ])
   },
   watch: {

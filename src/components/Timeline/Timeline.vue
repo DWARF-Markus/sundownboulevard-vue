@@ -70,11 +70,6 @@ export default {
   },
   computed: {
     ...mapGetters(["getStep"])
-  },
-  watch: {
-    mapGetters() {
-      console.log("updated");
-    }
   }
 };
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <div class="drink-entry">
-    <div class="drink-selected-container">
+  <div class="drink-entry" :class="{ 'selected' : isSelected }">
+    <div class="drink-selected-container" :class="{ 'hidden' : !isSelected }">
       <div class="drink-selected-amount">
-        <span class="remove-btn">-</span>
+        <span @click="handleDecrease" class="remove-btn">-</span>
 
         <span class="amount-display">{{ selectedAmount }}</span>
 
-        <span class="add-btn">+</span>
+        <span @click="handleIncrease" class="add-btn">+</span>
       </div>
     </div>
     <div role="button" class="drink-image">
@@ -23,15 +23,40 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Drink",
   props: {
-    data: { Type: Object }
+    data: { Type: Object },
+    selected: { Type: Boolean, default: false },
+    amount: { Type: Number, default: 0 }
   },
   data() {
     return {
-      selectedAmount: 0
+      selectedAmount: this.amount,
+      isSelected: this.selected
     };
+  },
+  methods: {
+    ...mapActions(["incrementDrink", "decreaseDrink"]),
+    handleDecrease() {
+      if (this.selectedAmount === 1) {
+        this.isSelected = false;
+        this.selectedAmount -= 1;
+        this.decreaseDrink(this.data.id);
+      } else if (this.selectedAmount === 0) {
+        console.log("Throw error: This item is already at 0.");
+      } else {
+        this.selectedAmount -= 1;
+        this.decreaseDrink(this.data.id);
+      }
+    },
+    handleIncrease() {
+      this.selectedAmount += 1;
+      this.isSelected = true;
+      this.incrementDrink(this.data.id);
+    }
   }
 };
 </script>

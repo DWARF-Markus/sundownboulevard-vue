@@ -9,10 +9,20 @@
       >{{ data[getStep - 2].timelineTitle }}</Button>
     </div>
     <div>
-      <p v-if="getStep === 3" class="logo-text text-center blue-text">drinks amount</p>
+      <p
+        v-if="getStep === 3"
+        class="logo-text text-center blue-text"
+      >{{ getSelectedDrinks.length }} chosen</p>
     </div>
     <div v-if="getStep !== 4" class="text-right">
       <Button
+        v-if="getStep === 3 && getSelectedDrinks.length === 0"
+        disabled
+        backBtn
+        @click="handleNextClick"
+      >MIN 1 DRINK</Button>
+      <Button
+        v-else
         icon="fa-arrow-right"
         rightIcon
         @click="handleNextClick"
@@ -37,11 +47,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["changeStep"]),
+    ...mapActions(["changeStep", "getSelectedDrinks"]),
     handlePrevClick() {
       if (this.getStep === 2) {
         this.$router.push("/");
-        this.changeStep(2);
       } else {
         this.changeStep(this.getStep - 1);
       }
@@ -51,7 +60,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getStep"])
+    ...mapGetters(["getStep", "getSelectedDrinks"])
   }
 };
 </script>

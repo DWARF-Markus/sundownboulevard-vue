@@ -23,10 +23,11 @@ export default {
     Button
   },
   methods: {
-    ...mapActions(["changeType", "changeStep"]),
+    ...mapActions(["changeType", "changeStep", "clearDrinks"]),
     handleNewBooking() {
       this.changeType("newBooking");
       this.changeStep(2);
+      this.clearDrinks();
       this.$router.push("/order");
     }
   }
