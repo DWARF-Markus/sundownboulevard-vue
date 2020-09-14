@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="order-nav">
-      <h3>Buttons navigation</h3>
+      <TimelineButtons />
     </div>
   </div>
 </template>
@@ -24,6 +24,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Timeline from "@/components/Timeline/Timeline.vue";
+import TimelineButtons from "@/components/Timeline/TimelineButtons.vue";
 import DishDisplay from "@/components/DishDisplay.vue";
 import DrinksDisplay from "@/components/DrinksDisplay.vue";
 import ConfirmDisplay from "@/components/ConfirmDisplay.vue";
@@ -36,7 +37,8 @@ export default {
     DishDisplay,
     DrinksDisplay,
     ConfirmDisplay,
-    ReceiptDisplay
+    ReceiptDisplay,
+    TimelineButtons
   },
   computed: { ...mapGetters(["getStep"]) }
 };

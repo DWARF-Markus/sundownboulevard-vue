@@ -61,7 +61,6 @@ export default {
       this.screenWidth = window.innerWidth > 1220 ? 1220 : window.innerWidth;
     },
     updateIndex(e) {
-      console.log(e);
       this.index = e;
       this.translatePixels = `translateX(-${e * this.screenWidth}px)`;
     }

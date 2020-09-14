@@ -1,0 +1,227 @@
+<template>
+  <div class="drink-entry">
+    <div class="drink-selected-container">
+      <div class="drink-selected-amount">
+        <span class="remove-btn">-</span>
+
+        <span class="amount-display">{{ selectedAmount }}</span>
+
+        <span class="add-btn">+</span>
+      </div>
+    </div>
+    <div role="button" class="drink-image">
+      <div class="loading-image">
+        <img :src="data.image_url" alt="beer" />
+      </div>
+    </div>
+    <div role="button" class="drink-desc">
+      <h3>{{ data.name }}</h3>
+      <p>{{ data.description }}</p>
+      <p class="logo-text blue-text mt-1">{{ data.abv }}%</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Drink",
+  props: {
+    data: { Type: Object }
+  },
+  data() {
+    return {
+      selectedAmount: 0
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.drink-entry {
+  margin: 5px;
+  display: flex;
+  box-shadow: 0;
+  transition: 0.1s ease;
+  min-height: 185px;
+  border: 3px solid #f3f3f3;
+  transition: 0.15s ease;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ebebeb11;
+  position: relative;
+}
+
+.drink-entry.selected {
+  border: 3px solid #007ddb;
+  background-color: #007cdb11;
+  box-shadow: 0 4px 6px #007cdb34;
+}
+
+.drink-entry:hover {
+  box-shadow: 0 4px 6px #0000000e;
+}
+
+.drink-image {
+  max-width: 70px;
+  min-width: 70px;
+  position: relative;
+  display: grid;
+  align-items: center;
+  padding: 10px;
+}
+
+.drink-image img {
+  max-width: 40px;
+}
+
+.drink-desc {
+  position: relative;
+  display: grid;
+  align-items: center;
+  padding: 10px;
+  p {
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 800;
+  }
+}
+
+.drink-selected-container {
+  display: flex;
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  bottom: 10px;
+  pointer-events: none;
+
+  .drink-selected-amount {
+    span {
+      opacity: 1;
+      transition: 0.15s ease;
+      border-radius: 5px;
+    }
+
+    .remove-btn {
+      position: absolute;
+      right: 4.3rem;
+      top: 5px;
+      transform: translateX(0px);
+      transition: 0.6s ease;
+    }
+
+    .amount-display {
+      position: absolute;
+      right: 2.4rem;
+      top: 8px;
+      transform: translateX(0px);
+      transition: 0.4s ease;
+      padding: 4px 9px;
+    }
+  }
+}
+
+.drink-selected-container.hidden {
+  .drink-selected-amount {
+    span {
+      opacity: 0;
+    }
+
+    .remove-btn {
+      transform: translateX(30px);
+    }
+
+    .amount-display {
+      transform: translateX(30px);
+      padding: 4px 2px;
+    }
+
+    .add-btn {
+      opacity: 1;
+    }
+  }
+}
+
+.drink-selected-remove {
+  border-radius: 100%;
+
+  i {
+    border-radius: 100%;
+    font-size: 20px;
+    pointer-events: all;
+    padding: 2px 4px;
+    transition: 0.15s ease;
+    box-shadow: 0;
+    cursor: pointer;
+  }
+
+  i:hover {
+    transform: scale(1.3);
+  }
+}
+
+.drink-selected-amount {
+  width: 100%;
+  text-align: right;
+  pointer-events: none;
+  padding: 5px 5px 0 0;
+
+  span {
+    background-color: #007ddb;
+    padding: 4px 9px;
+    color: white;
+    pointer-events: all;
+    position: relative;
+
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none;
+  }
+
+  span:first-of-type {
+    background: transparent;
+    color: #007ddb;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  span:nth-child(3) {
+    background: transparent;
+    font-size: 25px;
+    font-weight: 800;
+  }
+}
+
+.add-btn,
+.remove-btn {
+  color: #007cdb9c !important;
+  transition: 0.1s ease;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.add-btn:hover,
+.remove-btn:hover {
+  color: #007cdb !important;
+}
+
+.loading-image {
+  opacity: 1;
+  transform: translateX(0px);
+  transition: 0.18s ease;
+}
+
+.loading-image.hidden {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+</style>

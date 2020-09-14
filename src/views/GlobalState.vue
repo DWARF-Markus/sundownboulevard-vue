@@ -14,6 +14,15 @@
       Step:
       <b>{{ getStep }}</b>
     </p>
+    <p class="pt-1">
+      Dish:
+      <b>#{{ getDish.idMeal }}</b> Name:
+      <b>{{ getDish.strMeal }}</b>
+    </p>
+    <p class="pt-1">
+      Drinks count:
+      <b>{{ getDrinks.length }}</b>
+    </p>
   </div>
 </template>
 
@@ -22,7 +31,15 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "GlobalState",
-  computed: { ...mapGetters(["getBookingType", "getEmail", "getStep"]) },
+  computed: {
+    ...mapGetters([
+      "getBookingType",
+      "getEmail",
+      "getStep",
+      "getDish",
+      "getDrinks"
+    ])
+  },
   watch: {
     getBookingType(value, prev) {
       console.log(value, prev);

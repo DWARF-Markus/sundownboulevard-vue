@@ -203,6 +203,18 @@ h4 {
   margin: 20px 0;
 }
 
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
 // CHANGES FOR IPAD AND DESKTOP
 
 @media (min-width: 630px) {

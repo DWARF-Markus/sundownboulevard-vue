@@ -93,7 +93,7 @@ export default {
   position: fixed;
   width: 100%;
   z-index: 100;
-  // padding-top: 50px;
+  top: 50px;
 }
 
 .current-step-text {
@@ -381,7 +381,7 @@ export default {
 
   .timeline-banner-container {
     position: relative;
-    // padding-top: 70px;
+    top: 0px;
   }
 
   .desktop-wrapper {
