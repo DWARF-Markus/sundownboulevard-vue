@@ -197,11 +197,17 @@ h4 {
   padding: 0 3rem;
 }
 
+.divider {
+  width: 100%;
+  border-bottom: 1px solid rgba(184, 180, 180, 0.226);
+  margin: 20px 0;
+}
+
 // CHANGES FOR IPAD AND DESKTOP
 
 @media (min-width: 630px) {
   .page-wrapper {
-    padding: 70px 10px 0 10px;
+    padding: 70px 0px 0 0px;
   }
 }
 </style>

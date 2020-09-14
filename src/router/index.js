@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Order from '../views/Order.vue';
+import GlobalState from '../views/GlobalState.vue';
 
 const routes = [
 	{
@@ -12,6 +13,11 @@ const routes = [
 		path: '/order',
 		name: 'Order',
 		component: Order,
+	},
+	{
+		path: '/globalstate',
+		name: 'GlobalState',
+		component: GlobalState,
 	},
 ];
 

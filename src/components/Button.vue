@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "ButtonPrimary",
+  name: "Button",
   props: {
     big: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },

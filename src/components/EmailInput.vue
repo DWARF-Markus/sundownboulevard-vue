@@ -9,8 +9,8 @@
     </div>
     <div class="email-input-wrapper mt-1">
       <div class="input-pair">
-        <InputLabel @input="setUserEmail" inputType="email" text="Email" name="userEmail" />
-        <ButtonPrimary secondary class="mt-1">GO</ButtonPrimary>
+        <InputLabel @input="validateEmail" inputType="email" text="Email" name="userEmail" />
+        <Button v-bind="{ disabled : !emailValid }" @click="setUserEmail" secondary class="mt-1">GO</Button>
       </div>
     </div>
   </div>
@@ -18,24 +18,42 @@
 
 <script>
 import InputLabel from "@/components/InputLabel.vue";
-import ButtonPrimary from "@/components/ButtonPrimary.vue";
+import Button from "@/components/Button.vue";
 import { mapActions } from "vuex";
 
 export default {
   name: "EmailInput",
   components: {
     InputLabel,
-    ButtonPrimary
+    Button
   },
   data() {
     return {
-      userEmail: ""
+      userEmail: "",
+      emailValid: false,
+      regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     };
   },
   methods: {
-    ...mapActions(["changeEmail"]),
-    setUserEmail(e) {
-      this.changeEmail(e.target.value);
+    ...mapActions(["changeEmail", "changeType", "changeStep"]),
+    setUserEmail() {
+      if (this.emailValid) {
+        this.changeEmail(this.userEmail);
+        this.changeStep(2);
+        this.changeType("updateBooking");
+        this.$router.push("/order");
+      }
+    },
+    validateEmail(e) {
+      const input = e.target.value;
+
+      this.userEmail = input;
+
+      if (this.regex.test(input)) {
+        this.emailValid = true;
+      } else {
+        this.emailValid = false;
+      }
     }
   }
 };

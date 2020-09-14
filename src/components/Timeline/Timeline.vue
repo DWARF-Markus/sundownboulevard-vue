@@ -1,0 +1,402 @@
+<template>
+  <div class="timeline-banner-container">
+    <div class="mobile-timeline-banner blue px-1">
+      <div class="back-button">
+        <Button @click="handleHomeClick">BACK</Button>
+      </div>
+      <h4 class="white-text">{{ data[getStep - 1].bannerTitle }}</h4>
+      <h4 class="current-step-number white-text">
+        <span>{{ getStep }}</span> /
+        <span>5</span>
+      </h4>
+    </div>
+    <div class="desktop-wrapper">
+      <div class="absolute">
+        <div class="timeline-container">
+          <div class="timeline-wrapper">
+            <div
+              class="timeline-entry"
+              :class="{ active : getStep === entry.step, done : getStep > entry.step }"
+              v-for="entry in data"
+              :key="entry.id"
+            >
+              <div class="icon" @click="handleTimelineClick(entry.step)">
+                <div
+                  :class="{ 'not-finished blue-text circle' : getStep === entry.step, 'not-finished black-text circle' : getStep < entry.step, 'fa fa-check white-text checked blue' : getStep > entry.step }"
+                ></div>
+              </div>
+              <span>{{ entry.timelineTitle }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="banner-wrapper blue">
+        <h4 class="headline-timeline mt-1 white-text">{{ data[getStep - 1].bannerTitle }}</h4>
+        <p class="mt-1 white-text">{{ data[getStep - 1].bannerDesc }}</p>
+      </div>
+      <p class="blue-text text-center mt-1 fadein-anim"></p>
+    </div>
+  </div>
+</template>
+
+<script>
+import data from "./timeline-data.json";
+import { mapGetters, mapActions } from "vuex";
+import Button from "@/components/Button.vue";
+
+export default {
+  name: "Timeline",
+  components: {
+    Button
+  },
+  data() {
+    return {
+      data: data
+    };
+  },
+  methods: {
+    ...mapActions(["changeStep"]),
+    handleTimelineClick(e) {
+      if (e === 1 || e === 5) {
+        console.log("Wrong error: You cannot skip to this step.");
+      } else {
+        this.changeStep(e);
+      }
+    },
+    handleHomeClick() {
+      this.changeStep(2);
+      this.$router.push("/");
+    }
+  },
+  computed: {
+    ...mapGetters(["getStep"])
+  },
+  watch: {
+    mapGetters() {
+      console.log("updated");
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.mobile-timeline-banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  // padding-top: 70px;
+}
+
+.timeline-banner-container {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  // padding-top: 50px;
+}
+
+.current-step-text {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 1;
+  transition: 0.3s ease;
+}
+
+.current-step-text.loading {
+  opacity: 0;
+}
+
+.headline-timeline {
+  opacity: 1;
+  transform: translateY(0px);
+  transition: 0.3s ease;
+}
+
+.headline-timeline.loading {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.current-step-number {
+  text-align: right;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 100;
+  span {
+    font-weight: 600;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.banner-wrapper {
+  text-align: center;
+  margin-top: -20px;
+  opacity: 1;
+  animation-name: fadein;
+  animation-duration: 1.2s;
+
+  p {
+    font-size: 12px;
+    font-weight: 100;
+    padding: 0 10%;
+  }
+}
+
+@keyframes opacityInAnim {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadein-anim {
+  animation-name: opacityInAnim;
+  animation-duration: 2s;
+}
+
+.desktop-wrapper {
+  display: none;
+}
+
+@keyframes slidein {
+  0% {
+    margin-top: -50px;
+  }
+  15% {
+    margin-top: -50px;
+  }
+  100% {
+    margin-top: 17px;
+  }
+}
+
+.timeline-container {
+  display: grid;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: white;
+  z-index: 1000;
+  margin-top: 17px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.137);
+  animation-name: slidein;
+  animation-duration: 1.7s;
+  animation-direction: forward;
+}
+
+.timeline-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  max-width: 400px !important;
+}
+
+.timeline-wrapper:first-of-type(div)::before {
+  content: "";
+  border-bottom: 0px !important;
+  z-index: 1000;
+}
+
+.timeline-entry {
+  display: grid;
+  position: relative;
+  text-align: center;
+  height: 25px;
+  margin: 20px;
+  .icon {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+
+    :hover {
+      transform: scale(1.1);
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .not-finished {
+      margin-top: 5px;
+      opacity: 1;
+      width: 10px !important;
+      height: 10px !important;
+      background: white;
+      border: 2px solid rgb(128, 128, 128);
+      transition: 0.25s ease;
+    }
+  }
+
+  span {
+    font-size: 10px;
+    margin-top: 6px;
+    opacity: 0.5;
+    font-weight: 100;
+  }
+}
+
+.timeline-entry::before {
+  content: "";
+  position: absolute;
+  width: 70px;
+  border-bottom: 1px solid black;
+  opacity: 0.4;
+  margin-top: 9px;
+  margin-left: -55px;
+  z-index: -1;
+}
+
+.done::before,
+.active::before {
+  content: "";
+  background-color: #7abdf0;
+  height: 4px;
+  z-index: 5;
+  opacity: 1;
+  margin-left: -51px;
+  border: none;
+  top: -2px;
+  width: 63px;
+}
+
+@keyframes timelineSlide {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 63px;
+  }
+}
+
+.active::before {
+  width: 70px;
+  animation-name: timelineSlide;
+  animation-duration: 0.1s;
+}
+
+.done::before {
+  animation-duration: 0s;
+}
+
+.timeline-entry.active {
+  .icon {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    div {
+      margin-top: 0px;
+      opacity: 1;
+      width: 18px !important;
+      height: 18px !important;
+      background: white;
+      border: 5px solid #007ddb;
+    }
+  }
+  span {
+    font-weight: 400;
+    opacity: 1;
+    margin-top: 3px !important;
+    color: #007ddb;
+    transition: 0.5s ease;
+  }
+}
+
+.active:after {
+  content: "";
+  position: absolute;
+  width: 70px;
+  border-bottom: 1px solid black;
+  opacity: 0.4;
+  margin-top: 9px;
+  margin-left: -55px;
+  z-index: -1;
+}
+
+.timeline-entry:first-of-type,
+.timeline-entry:last-of-type {
+  span {
+    margin-top: 4px !important;
+    color: black;
+  }
+
+  :hover {
+    cursor: default !important;
+    transform: none !important;
+  }
+}
+
+.timeline-entry:first-of-type::before {
+  content: "";
+  border-bottom: 0px;
+  background-color: none;
+  width: 0px;
+}
+
+.circle {
+  border: 2px solid;
+  border-radius: 100%;
+  padding-top: 3px;
+}
+
+.step-dot {
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 300px) {
+  .current-step-text {
+    font-size: 14px;
+  }
+
+  .current-step-number {
+    font-size: 24px;
+  }
+}
+
+.checked {
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 8px !important;
+}
+
+@media (min-width: 630px) {
+  .mobile-timeline-banner {
+    display: none;
+  }
+
+  .timeline-banner-container {
+    position: relative;
+    // padding-top: 70px;
+  }
+
+  .desktop-wrapper {
+    display: block;
+  }
+
+  .banner-wrapper {
+    min-height: 180px;
+    max-height: 180px;
+    padding: 85px 30px 0px 30px;
+
+    h4 {
+      font-weight: 600;
+      font-size: 22px;
+    }
+  }
+}
+</style>
