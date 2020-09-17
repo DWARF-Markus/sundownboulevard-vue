@@ -1,6 +1,6 @@
 <template>
   <div class="booking-entry m-1 p-1">
-    <h3 class="booking-id logo-text mt-1">#{{ data.id }}</h3>
+    <h4 class="booking-id blue-text mt-1">#{{ data.id }}</h4>
     <p class="mt-1 text-center">
       START
       <br />
@@ -59,11 +59,6 @@ export default {
       this.changeType("updateBooking");
       this.$router.push("/order/dish");
     }
-  },
-  created() {
-    console.log(
-      this.data.drinks.reduce((acc, cur) => console.log(cur.drink_info.name))
-    );
   }
 };
 </script>

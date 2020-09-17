@@ -12,7 +12,8 @@
     <div class="text-center">
       <Button
         @click="loadList(page)"
-        class="mx-1"
+        class="mx-1 px-1"
+        :backBtn="page !== currentPage"
         v-for="page in numberOfPages"
         v-bind:key="page"
       >{{ page }}</Button>
