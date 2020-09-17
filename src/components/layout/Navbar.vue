@@ -2,7 +2,7 @@
   <div id="nav">
     <nav class="navbar-container white">
       <div class="navbar-wrapper">
-        <div class="navbar-logo">
+        <div class="navbar-logo" @click="handleHomeClick">
           <img src="../../assets/beach.svg" />
           <p class="logo-text">SUNDOWN BOULEVARD</p>
         </div>
@@ -70,6 +70,9 @@ export default {
   methods: {
     toggleNav() {
       this.active = !this.active;
+    },
+    handleHomeClick() {
+      this.$router.push("/");
     }
   }
 };
@@ -101,6 +104,7 @@ export default {
 .navbar-logo {
   display: flex;
   padding: auto;
+  cursor: pointer;
 
   p {
     display: grid;

@@ -27,6 +27,26 @@
       Drinks selected:
       <b>{{ getSelectedDrinks }}</b>
     </p>
+    <p class="pt-1">
+      Drink names selected:
+      <b>{{ getSelectedDrinkNames }}</b>
+    </p>
+    <p class="pt-1">
+      Date selected:
+      <b>{{ getDate }}</b>
+    </p>
+    <p class="pt-1">
+      Time selected:
+      <b>{{ getTime }}</b>
+    </p>
+    <p class="pt-1">
+      People count selected:
+      <b>{{ getPeopleAmount }}</b>
+    </p>
+    <p class="pt-1">
+      Bookings:
+      <b>{{ getMultipleBookings }}</b>
+    </p>
   </div>
 </template>
 
@@ -42,7 +62,12 @@ export default {
       "getStep",
       "getDish",
       "getDrinks",
-      "getSelectedDrinks"
+      "getSelectedDrinks",
+      "getDate",
+      "getTime",
+      "getPeopleAmount",
+      "getSelectedDrinkNames",
+      "getMultipleBookings"
     ])
   },
   watch: {
@@ -53,5 +78,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

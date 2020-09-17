@@ -28,7 +28,7 @@ export default {
       this.changeType("newBooking");
       this.changeStep(2);
       this.clearDrinks();
-      this.$router.push("/order");
+      this.$router.push("/order/dish");
     }
   }
 };

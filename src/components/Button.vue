@@ -1,7 +1,13 @@
 <template>
   <button
     class="button"
-    :class="{'button--small': small , 'button--disabled':disabled, 'button--big' : big, 'button--secondary' : secondary, 'button--backBtn' : backBtn}"
+    :class="{
+			'button--small': small,
+			'button--disabled': disabled,
+			'button--big': big,
+			'button--secondary': secondary,
+			'button--backBtn': backBtn,
+		}"
   >
     <i v-if="leftIcon" class="fa blue-text" :class="icon" />
     <slot></slot>
@@ -34,19 +40,21 @@ export default {
   border-radius: 4px;
   color: white;
   font-family: "Helvetica Neue", sans-serif;
-  font-size: 12px;
+  font-size: 9px;
   letter-spacing: 1px;
-  font-weight: 800;
+  font-weight: 400;
   outline: none;
-  padding: 9px 20px;
+  padding: 6px 14px;
   transition: 0.12s ease;
 
   &--small {
-    padding: 5px 10px;
+    padding: 3px 7px;
+    font-size: 9px;
   }
 
   &--big {
-    padding: 12px 30px !important;
+    padding: 6px 20px !important;
+    font-size: 12px;
   }
 
   &--disabled {
@@ -66,13 +74,13 @@ export default {
     font-family: "Helvetica Neue", sans-serif;
     font-size: 10px;
     letter-spacing: 1px;
-    font-weight: 800;
+    font-weight: 200;
     margin: 5px 0;
     outline: none;
     padding: 7px 2px;
     transition: 0.12s ease;
     i {
-      margin: 0 4px;
+      margin: 0 8px;
       transition: 0.12s ease;
     }
     :hover {
@@ -98,5 +106,75 @@ export default {
   opacity: 1;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.19), 0 4px 6px rgba(0, 0, 0, 0.23);
   cursor: pointer;
+}
+
+@media (min-width: 630px) {
+  .button {
+    opacity: 0.9;
+    background-color: #007ddb;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 400;
+    outline: none;
+    padding: 9px 20px;
+    transition: 0.12s ease;
+
+    &--small {
+      padding: 5px 10px;
+    }
+
+    &--big {
+      padding: 12px 30px !important;
+    }
+
+    &--disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    &--secondary {
+      background-color: #ba2329;
+    }
+
+    &--backBtn {
+      background-color: white;
+      border: none;
+      border-radius: 4px;
+      color: #007ddb;
+      font-family: "Helvetica Neue", sans-serif;
+      font-size: 10px;
+      letter-spacing: 1px;
+      font-weight: 200;
+      margin: 5px 0;
+      outline: none;
+      padding: 7px 2px;
+      transition: 0.12s ease;
+      i {
+        margin: 0 8px;
+        transition: 0.12s ease;
+      }
+      :hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.19),
+          0 4px 6px rgba(0, 0, 0, 0.23);
+        transform: scale(1.03);
+      }
+      :active {
+        transform: scale(0.97);
+        box-shadow: none;
+      }
+      @media (min-width: 630px) {
+        font-size: 12px;
+        padding: 7px 20px;
+      }
+    }
+
+    i {
+      padding-left: 6px;
+    }
+  }
 }
 </style>

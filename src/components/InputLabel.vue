@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<label v-bind:for="name">{{ text }}</label>
+	<div class="text-left">
+		<label :v-model="value" v-bind:for="name">{{ text }}</label>
 		<input
 			v-model="value"
 			@input="updateValue"
@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .input-pair {
 	display: grid;
 }
@@ -47,6 +47,7 @@ export default {
 	padding: 5px;
 	width: 100%;
 	transition: 0.14s ease;
+	margin-top: 5px;
 }
 
 .input-pair.disabled label {

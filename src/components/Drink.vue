@@ -1,6 +1,6 @@
 <template>
-  <div class="drink-entry" :class="{ 'selected' : isSelected }">
-    <div class="drink-selected-container" :class="{ 'hidden' : !isSelected }">
+  <div class="drink-entry" :class="{ selected: isSelected }">
+    <div class="drink-selected-container" :class="{ hidden: !isSelected }">
       <div class="drink-selected-amount">
         <span @click="handleDecrease" class="remove-btn">-</span>
 
@@ -9,9 +9,14 @@
         <span @click="handleIncrease" class="add-btn">+</span>
       </div>
     </div>
-    <div role="button" class="drink-image">
+    <div
+      role="button"
+      class="drink-image loading-image"
+      :class="{ 'drink-image--offline' : networkOff, 'hidden' : !imageIsLoaded }"
+    >
       <div class="loading-image">
-        <img :src="data.image_url" alt="beer" />
+        <img @load="onImgLoad" :src="data.image_url" alt="beer" v-if="!networkOff" />
+        <i v-else class="fa fa-beer px-1"></i>
       </div>
     </div>
     <div role="button" class="drink-desc">
@@ -35,8 +40,17 @@ export default {
   data() {
     return {
       selectedAmount: this.amount,
-      isSelected: this.selected
+      isSelected: this.selected,
+      imageIsLoaded: false,
+      image: null,
+      networkOff: false
     };
+  },
+  mounted() {
+    if (!navigator.onLine) {
+      this.networkOff = true;
+      this.imageIsLoaded = true;
+    }
   },
   methods: {
     ...mapActions(["incrementDrink", "decreaseDrink"]),
@@ -55,18 +69,29 @@ export default {
     handleIncrease() {
       this.selectedAmount += 1;
       this.isSelected = true;
-      this.incrementDrink(this.data.id);
+      this.incrementDrink(this.data.id, this.data.name);
+    },
+    onImgLoad() {
+      this.imageIsLoaded = true;
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
 .drink-entry {
   margin: 5px;
   display: flex;
   box-shadow: 0;
-  transition: 0.1s ease;
   min-height: 185px;
   border: 3px solid #f3f3f3;
   transition: 0.15s ease;
@@ -74,6 +99,25 @@ export default {
   cursor: pointer;
   background-color: #ebebeb11;
   position: relative;
+
+  &--placeholder {
+    margin: 5px;
+    transition: 0.15s ease;
+    min-height: 185px;
+    border-radius: 5px;
+    border: 3px solid #f3f3f3;
+    background-color: #ebebeb11;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    i {
+      opacity: 0.6;
+      margin-top: 10px;
+      transition: 10s;
+      animation: spin-animation 0.8s infinite;
+      animation-timing-function: linear;
+    }
+  }
 }
 
 .drink-entry.selected {
@@ -93,10 +137,23 @@ export default {
   display: grid;
   align-items: center;
   padding: 10px;
+
+  &--offline {
+    opacity: 0.2 !important;
+  }
 }
 
 .drink-image img {
   max-width: 40px;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .drink-desc {
@@ -104,6 +161,8 @@ export default {
   display: grid;
   align-items: center;
   padding: 10px;
+  opacity: 1;
+  transition: 0.75s ease-in-out;
   p {
     font-size: 11px;
     overflow: hidden;
@@ -117,6 +176,13 @@ export default {
     font-size: 15px;
     font-weight: 800;
   }
+
+  &--show {
+    opacity: 1;
+  }
+
+  animation-name: fadein;
+  animation-duration: 1s ease-in;
 }
 
 .drink-selected-container {

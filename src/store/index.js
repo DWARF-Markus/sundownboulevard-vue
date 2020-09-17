@@ -6,8 +6,8 @@ import drinks from './modules/drinks';
 
 export default createStore({
 	state: {},
-	mutations: {},
 	actions: {},
+	mutations: {},
 	modules: {
 		app,
 		booking,

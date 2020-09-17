@@ -1,12 +1,11 @@
 <template>
-  <div class="btn-container px-1">
+  <div v-if="getStep !== 5" class="btn-container px-1">
     <div class="text-left">
-      <Button
-        backBtn
-        icon="fa-arrow-left"
-        leftIcon
-        @click="handlePrevClick"
-      >{{ data[getStep - 2].timelineTitle }}</Button>
+      <Button backBtn icon="fa-chevron-left" leftIcon @click="handlePrevClick">
+        {{
+        data[getStep - 2].timelineTitle
+        }}
+      </Button>
     </div>
     <div>
       <p
@@ -21,12 +20,11 @@
         backBtn
         @click="handleNextClick"
       >MIN 1 DRINK</Button>
-      <Button
-        v-else
-        icon="fa-arrow-right"
-        rightIcon
-        @click="handleNextClick"
-      >{{ data[getStep].timelineTitle }}</Button>
+      <Button v-else icon="fa-chevron-right" rightIcon @click="handleNextClick">
+        {{
+        data[getStep].timelineTitle
+        }}
+      </Button>
     </div>
   </div>
 </template>
@@ -53,10 +51,14 @@ export default {
         this.$router.push("/");
       } else {
         this.changeStep(this.getStep - 1);
+        this.$router.push(this.data[this.getStep - 1].url);
+        window.scrollTo(0, 0);
       }
     },
     handleNextClick() {
       this.changeStep(this.getStep + 1);
+      this.$router.push(this.data[this.getStep - 1].url);
+      window.scrollTo(0, 0);
     }
   },
   computed: {
@@ -77,12 +79,15 @@ export default {
 }
 
 .btn-container {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   position: fixed;
   bottom: 0;
   width: 100%;
+  left: 0;
+  padding: 0 1rem;
   z-index: 100;
   height: 80px;
   background-color: white;
@@ -93,9 +98,7 @@ export default {
 
 @media (min-width: 630px) {
   .btn-container {
-    position: relative !important;
-    animation-name: none;
-    background-color: transparent;
+    padding: 0 5rem;
   }
 }
 </style>

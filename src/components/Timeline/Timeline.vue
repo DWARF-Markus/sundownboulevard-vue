@@ -2,9 +2,11 @@
   <div class="timeline-banner-container">
     <div class="mobile-timeline-banner blue px-1">
       <div class="back-button">
-        <Button @click="handleHomeClick">BACK</Button>
+        <Button @click="handleHomeClick">
+          <i class="fa fa-chevron-left"></i>
+        </Button>
       </div>
-      <h4 class="white-text">{{ data[getStep - 1].bannerTitle }}</h4>
+      <h4 class="white-text text-center">{{ data[getStep - 1].bannerTitle }}</h4>
       <h4 class="current-step-number white-text">
         <span>{{ getStep }}</span> /
         <span>5</span>
@@ -13,16 +15,27 @@
     <div class="desktop-wrapper">
       <div class="absolute">
         <div class="timeline-container">
-          <div class="timeline-wrapper">
+          <div class="timeline-wrapper" :class="{ 'timeline-wrapper--disabled' : getStep === 5 }">
             <div
               class="timeline-entry"
-              :class="{ active : getStep === entry.step, done : getStep > entry.step }"
+              :class="{
+								active: getStep === entry.step && getStep !== 5,
+								done:
+									getStep > entry.step || (getStep === 5 && entry.step === 5),
+							}"
               v-for="entry in data"
               :key="entry.id"
             >
               <div class="icon" @click="handleTimelineClick(entry.step)">
                 <div
-                  :class="{ 'not-finished blue-text circle' : getStep === entry.step, 'not-finished black-text circle' : getStep < entry.step, 'fa fa-check white-text checked blue' : getStep > entry.step }"
+                  :class="{
+										'not-finished blue-text circle':
+											getStep === entry.step && getStep !== 5,
+										'not-finished black-text circle': getStep < entry.step,
+										'fa fa-check white-text checked blue':
+											getStep > entry.step ||
+											(getStep === 5 && entry.step === 5),
+									}"
                 ></div>
               </div>
               <span>{{ entry.timelineTitle }}</span>
@@ -34,7 +47,10 @@
         <h4 class="headline-timeline mt-1 white-text">{{ data[getStep - 1].bannerTitle }}</h4>
         <p class="mt-1 white-text">{{ data[getStep - 1].bannerDesc }}</p>
       </div>
-      <p class="blue-text text-center mt-1 fadein-anim"></p>
+      <p
+        v-if="getBookingType === 'updateBooking'"
+        class="blue-text text-center mt-1 fadein-anim"
+      >You are currently updating a booking by {{ getEmail }}</p>
     </div>
   </div>
 </template>
@@ -61,6 +77,7 @@ export default {
         console.log("Wrong error: You cannot skip to this step.");
       } else {
         this.changeStep(e);
+        this.$router.push(this.data[e - 1].url);
       }
     },
     handleHomeClick() {
@@ -69,7 +86,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getStep"])
+    ...mapGetters(["getStep", "getEmail", "getBookingType"])
   }
 };
 </script>
@@ -81,6 +98,10 @@ export default {
   width: 100%;
   height: 50px;
   align-items: center;
+
+  h4 {
+    font-size: 10px;
+  }
   // padding-top: 70px;
 }
 
@@ -118,7 +139,7 @@ export default {
 .current-step-number {
   text-align: right;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 18px !important;
   font-weight: 100;
   span {
     font-weight: 600;
@@ -193,13 +214,17 @@ export default {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.137);
   animation-name: slidein;
   animation-duration: 1.7s;
-  animation-direction: forward;
 }
 
 .timeline-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   max-width: 400px !important;
+
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.8;
+  }
 }
 
 .timeline-wrapper:first-of-type(div)::before {

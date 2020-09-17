@@ -1,15 +1,18 @@
 const state = {
 	allDrinks: [],
+	allDrinksLoaded: false,
 	selectedDrinks: [],
 };
 
 const getters = {
 	getDrinks: (state) => state.allDrinks,
+	getDrinksLoaded: (state) => state.allDrinksLoaded,
 	getSelectedDrinks: (state) => state.selectedDrinks,
 };
 
 const actions = {
 	async fetchDrinks({ commit }) {
+		commit('setDrinksLoaded', false);
 		await fetch('https://krh-sundown.dev.dwarf.dk/api/user/all_drinks', {
 			method: 'GET',
 			headers: {
@@ -18,10 +21,19 @@ const actions = {
 			},
 		})
 			.then((res) => res.json())
-			.then((data) => commit('setDrinks', data));
+			.then((data) => {
+				commit('setDrinks', data);
+
+				const parsed = JSON.stringify(data);
+				localStorage.setItem('drinks', parsed);
+
+				setTimeout(() => {
+					commit('setDrinksLoaded', true);
+				}, 300);
+			});
 	},
-	incrementDrink({ commit }, id) {
-		commit('setIncrementDrink', parseInt(id));
+	incrementDrink({ commit }, id, name) {
+		commit('setIncrementDrink', parseInt(id), name);
 	},
 
 	decreaseDrink({ commit }, id) {
@@ -30,6 +42,15 @@ const actions = {
 
 	clearDrinks({ commit }) {
 		commit('setClearDrinks');
+	},
+
+	changeSelectedDrinks({ commit }, arr) {
+		commit('setSelectedDrinks', arr);
+	},
+
+	changeDrinks({ commit }, arr) {
+		commit('setDrinks', arr);
+		commit('setDrinksLoaded', true);
 	},
 };
 
@@ -46,6 +67,8 @@ const mutations = {
 		];
 	},
 	setClearDrinks: (state) => (state.selectedDrinks = []),
+	setSelectedDrinks: (state, payload) => (state.selectedDrinks = payload),
+	setDrinksLoaded: (state, payload) => (state.allDrinksLoaded = payload),
 };
 
 export default {

@@ -1,7 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
+import Bookings from '../views/Bookings.vue';
 import Order from '../views/Order.vue';
 import GlobalState from '../views/GlobalState.vue';
+import DishDisplay from '@/components/DishDisplay.vue';
+import DrinksDisplay from '@/components/DrinksDisplay.vue';
+import ConfirmDisplay from '@/components/ConfirmDisplay.vue';
+import ReceiptDisplay from '@/components/ReceiptDisplay.vue';
 
 const routes = [
 	{
@@ -10,9 +15,32 @@ const routes = [
 		component: Home,
 	},
 	{
+		path: '/bookings',
+		name: 'Bookings',
+		component: Bookings,
+	},
+	{
 		path: '/order',
 		name: 'Order',
 		component: Order,
+		children: [
+			{
+				path: 'dish',
+				component: DishDisplay,
+			},
+			{
+				path: 'drinks',
+				component: DrinksDisplay,
+			},
+			{
+				path: 'confirm',
+				component: ConfirmDisplay,
+			},
+			{
+				path: 'receipt',
+				component: ReceiptDisplay,
+			},
+		],
 	},
 	{
 		path: '/globalstate',
