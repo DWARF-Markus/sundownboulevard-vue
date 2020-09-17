@@ -16,7 +16,7 @@
     >
       <div class="loading-image">
         <img @load="onImgLoad" :src="data.image_url" alt="beer" v-if="!networkOff" />
-        <i v-else class="fa fa-beer px-1"></i>
+        <i v-else class="fa fa-beer px-1 blue-text"></i>
       </div>
     </div>
     <div role="button" class="drink-desc">
@@ -139,7 +139,7 @@ export default {
   padding: 10px;
 
   &--offline {
-    opacity: 0.2 !important;
+    opacity: 0.8 !important;
   }
 }
 

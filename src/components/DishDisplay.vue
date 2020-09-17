@@ -21,7 +21,9 @@
         >NEW DISH</Button>
       </div>
       <div class="dish-display-img p-1">
+        <i v-if="!onLine" class="fa fa-carrot blue-text"></i>
         <img
+          v-else
           :class="{ display: isDishImageLoaded }"
           @load="dishImgLoaded"
           :src="getDish.strMealThumb"
@@ -43,27 +45,62 @@ export default {
   },
   data() {
     return {
-      isDishImageLoaded: false
+      isDishImageLoaded: false,
+      onLine: navigator.onLine,
+      networkOff: false
     };
   },
   computed: {
     ...mapGetters(["getBookingType", "getDish", "getDishLoading"])
   },
   methods: {
-    ...mapActions(["fetchDish", "changeStep"]),
+    ...mapActions(["fetchDish", "changeStep", "fetchLocalStorageDish"]),
     handleNewDish() {
-      this.isDishImageLoaded = false;
-      this.fetchDish();
+      if (this.onLine) {
+        this.fetchDish();
+        this.isDishImageLoaded = false;
+      } else {
+        this.fetchLocalStorageDish();
+      }
     },
     dishImgLoaded() {
       this.isDishImageLoaded = true;
+    },
+    updateOnlineStatus(e) {
+      const { type } = e;
+      this.onLine = type === "online";
     }
   },
   created() {
     this.changeStep(2);
-    if (this.getBookingType === "newBooking") {
-      this.fetchDish();
+
+    if (this.onLine) {
+      if (
+        this.getBookingType === "newBooking" &&
+        this.getDish.name !== undefined
+      ) {
+        console.log("get new dish");
+        this.fetchDish();
+      }
+    } else {
+      console.log("get local dish");
+      this.fetchLocalStorageDish();
     }
+  },
+  watch: {
+    onLine(v) {
+      if (v) {
+        this.networkOff = true;
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener("online", this.updateOnlineStatus);
+    window.addEventListener("offline", this.updateOnlineStatus);
+  },
+  beforeUnmount() {
+    window.removeEventListener("online", this.updateOnlineStatus);
+    window.removeEventListener("offline", this.updateOnlineStatus);
   }
 };
 </script>
@@ -155,9 +192,21 @@ export default {
   }
 }
 
-.dish-display-img img {
+.dish-display-img {
   max-height: 330px;
   object-fit: cover;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+
+  img {
+    max-height: 330px;
+    object-fit: cover;
+  }
+
+  i {
+    font-size: 40px;
+  }
 }
 
 .dish-display-desc {
