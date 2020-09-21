@@ -1,25 +1,30 @@
 <template>
-	<div className="receipt-container">
-		<div className="receipt">
-			<h3 className="mt-1 logo-text blue-text">RECEIPT</h3>
-			<div className="order-items">
+	<div class="receipt-container">
+		<div class="receipt">
+			<h3 class="mt-1 logo-text blue-text">RECEIPT</h3>
+			<div class="order-items">
 				<p>
-					{{ getPeopleAmount }} x <span>{{ getDish.strMeal }}</span>
+					{{ getPeopleAmount }} x
+					<span>{{ getDish.strMeal }}</span>
 				</p>
 				<p v-for="(value, key) in drinksSummary" v-bind:key="key">
-					{{ value }} x <span>{{ key }}</span>
+					{{ value }} x
+					<span>{{ key }}</span>
 				</p>
 			</div>
-			<div className="divider"></div>
-			<div className="order-details">
+			<div class="divider"></div>
+			<div class="order-details">
 				<p>
-					Email <span>{{ getEmail }}</span>
+					Email
+					<span>{{ getEmail }}</span>
 				</p>
 				<p>
-					Date and time <span>{{ getDate }} @ {{ getTime }}</span>
+					Date and time
+					<span>{{ getDate }} @ {{ getTime }}</span>
 				</p>
 				<p>
-					Guests <span>{{ getPeopleAmount }}</span>
+					Guests
+					<span>{{ getPeopleAmount }}</span>
 				</p>
 			</div>
 			<Button @click="handleHomeClick" rightIcon icon="fa-home" class="mt-2" big
@@ -30,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Button from '@/components/Button.vue';
 
 export default {
@@ -39,6 +44,7 @@ export default {
 		Button,
 	},
 	methods: {
+		...mapActions(['changeStep']),
 		handleHomeClick() {
 			this.$router.push('/');
 		},
@@ -73,6 +79,9 @@ export default {
 
 			return drinksToOutput;
 		},
+	},
+	created() {
+		this.changeStep(5);
 	},
 	updated() {
 		console.log(this.getDrinks);

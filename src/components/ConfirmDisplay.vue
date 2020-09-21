@@ -285,7 +285,8 @@ export default {
       "getDish",
       "getPeopleAmount",
       "getEmail",
-      "getBookingId"
+      "getBookingId",
+      "getStep"
     ]),
     today() {
       const date = new Date();

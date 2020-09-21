@@ -3,6 +3,7 @@ import Home from '../views/Home.vue';
 import Bookings from '../views/Bookings.vue';
 import Order from '../views/Order.vue';
 import GlobalState from '../views/GlobalState.vue';
+import NewTimeline from '../views/NewTimeline.vue';
 import DishDisplay from '@/components/DishDisplay.vue';
 import DrinksDisplay from '@/components/DrinksDisplay.vue';
 import ConfirmDisplay from '@/components/ConfirmDisplay.vue';
@@ -46,6 +47,11 @@ const routes = [
 		path: '/globalstate',
 		name: 'GlobalState',
 		component: GlobalState,
+	},
+	{
+		path: '/newtimeline',
+		name: 'NewTimeline',
+		component: NewTimeline,
 	},
 ];
 

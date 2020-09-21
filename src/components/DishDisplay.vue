@@ -21,10 +21,14 @@
         >NEW DISH</Button>
       </div>
       <div class="dish-display-img p-1">
-        <i v-if="!onLine" class="fa fa-carrot blue-text"></i>
+        <!-- <i
+          :class="{ display: !isDishImageLoaded }"
+          v-if="!isDishImageLoaded"
+          class="fa fa-carrot blue-text"
+        ></i>-->
         <img
-          v-else
-          :class="{ display: isDishImageLoaded }"
+          v-if="!showCarrot"
+          :class="{ display: isDishImageLoaded && !showCarrot }"
           @load="dishImgLoaded"
           :src="getDish.strMealThumb"
           alt="image of meal"
@@ -47,7 +51,8 @@ export default {
     return {
       isDishImageLoaded: false,
       onLine: navigator.onLine,
-      networkOff: false
+      networkOff: false,
+      showCarrot: false
     };
   },
   computed: {
@@ -56,6 +61,7 @@ export default {
   methods: {
     ...mapActions(["fetchDish", "changeStep", "fetchLocalStorageDish"]),
     handleNewDish() {
+      this.isDishImageLoaded = false;
       if (this.onLine) {
         this.fetchDish();
         this.isDishImageLoaded = false;
@@ -63,7 +69,8 @@ export default {
         this.fetchLocalStorageDish();
       }
     },
-    dishImgLoaded() {
+    dishImgLoaded(load) {
+      console.log(load);
       this.isDishImageLoaded = true;
     },
     updateOnlineStatus(e) {
@@ -75,10 +82,7 @@ export default {
     this.changeStep(2);
 
     if (this.onLine) {
-      if (
-        this.getBookingType === "newBooking" &&
-        this.getDish.name !== undefined
-      ) {
+      if (this.getBookingType === "newBooking") {
         console.log("get new dish");
         this.fetchDish();
       }
@@ -86,6 +90,10 @@ export default {
       console.log("get local dish");
       this.fetchLocalStorageDish();
     }
+
+    // if (!this.isDishImageLoaded) {
+    //   this.showCarrot = true;
+    // }
   },
   watch: {
     onLine(v) {

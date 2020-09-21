@@ -15,8 +15,8 @@
       :class="{ 'drink-image--offline' : networkOff, 'hidden' : !imageIsLoaded }"
     >
       <div class="loading-image">
-        <img @load="onImgLoad" :src="data.image_url" alt="beer" v-if="!networkOff" />
-        <i v-else class="fa fa-beer px-1 blue-text"></i>
+        <img @load="onImgLoad" :src="data.image_url" alt="beer" />
+        <!-- <i class="fa fa-beer px-1 blue-text"></i> -->
       </div>
     </div>
     <div role="button" class="drink-desc">

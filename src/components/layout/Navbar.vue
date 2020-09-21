@@ -4,7 +4,7 @@
       <div class="navbar-wrapper">
         <div class="navbar-logo" @click="handleHomeClick">
           <img src="../../assets/beach.svg" />
-          <p class="logo-text">SUNDOWN BOULEVARD</p>
+          <p class="logo-text">SUNDOWN BOULEVARD - VUE</p>
         </div>
         <div class="navbar-mobile-menu">
           <div
@@ -28,7 +28,9 @@
               </a>
             </li>
             <li class="nav-entry pt-1">
-              <a class="black-text mx-1" href="#!">PRODUCTS</a>
+              <a class="black-text mx-1" href="#!">
+                <router-link to="/newtimeline">PRODUCTS</router-link>
+              </a>
             </li>
             <li class="nav-entry pt-1">
               <a class="black-text mx-1" href="#!">RESTAURANTS</a>
@@ -48,7 +50,9 @@
             </a>
           </li>
           <li class="nav-mobile-entry pt-1">
-            <a class="black-text" href="#!">PRODUCTS</a>
+            <a class="black-text" href="#!">
+              <router-link to="/newtimeline">PRODUCTS</router-link>
+            </a>
           </li>
           <li class="nav-mobile-entry pt-1">
             <a class="black-text" href="#!">RESTAURANTS</a>
