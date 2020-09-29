@@ -24,11 +24,6 @@
         >NEW DISH</Button>
       </div>
       <div class="dish-display-img p-1">
-        <!-- <i
-          :class="{ display: !isDishImageLoaded }"
-          v-if="!isDishImageLoaded"
-          class="fa fa-carrot blue-text"
-        ></i>-->
         <img
           v-if="!showCarrot"
           :class="{ display: isDishImageLoaded && !showCarrot }"
@@ -74,9 +69,10 @@ export default {
         this.fetchLocalStorageDish();
       }
     },
-    dishImgLoaded(load) {
-      console.log(load);
-      this.isDishImageLoaded = true;
+    dishImgLoaded() {
+      setTimeout(() => {
+        this.isDishImageLoaded = true;
+      }, 100);
     }
   },
   created() {
@@ -119,11 +115,12 @@ export default {
   animation-name: quickFadeIn;
   animation-duration: 1.3s;
   min-height: calc(100vh - 90px);
-  transition: 0.15s ease-in-out;
+  transition: 0.35s ease-in-out;
   opacity: 1;
 
   &--loading {
     opacity: 0;
+    pointer-events: none;
 
     img {
       opacity: 0;

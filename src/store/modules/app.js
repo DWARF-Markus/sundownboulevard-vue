@@ -3,11 +3,13 @@ const state = {
 	loading: false,
 	error: false,
 	internetStatus: true,
+	sidebarActive: false,
 };
 
 const getters = {
 	getStep: (state) => state.step,
 	getInternetStatus: (state) => state.internetStatus,
+	getSidebarActive: (state) => state.sidebarActive,
 };
 
 const actions = {
@@ -17,11 +19,15 @@ const actions = {
 	changeInternetStatus({ commit }, value) {
 		commit('setInternetConnection', value);
 	},
+	changeSidebarToggle({ commit }, value) {
+		commit('setSidebarActive', value);
+	},
 };
 
 const mutations = {
 	setStep: (state, payload) => (state.step = payload),
 	setInternetConnection: (state, payload) => (state.internetStatus = payload),
+	setSidebarActive: (state, payload) => (state.sidebarActive = payload),
 };
 
 export default {
