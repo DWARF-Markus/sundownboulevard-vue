@@ -107,7 +107,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['getStep']),
+		...mapGetters(['getStep', 'getSelectedDrinks']),
 		getWidth() {
 			return (this.getStep - 1) * 25;
 		},
@@ -122,7 +122,10 @@ export default {
 		...mapActions(['changeStep']),
 		handleNewStep(e) {
 			if (e === 1 || e === 5) {
-				console.log('Wrong error: You cannot skip to this step.');
+				this.$emit('error', 'You cannot skip to this step');
+			} else if (e === 4 && this.getSelectedDrinks.length === 0) {
+				this.$emit('error', 'Please choose at least one drink');
+				this.$router.push('/order/drinks');
 			} else {
 				this.loading = true;
 
@@ -178,7 +181,6 @@ $blue: #007ddb;
 
 .timeline-entry {
 	background-color: white;
-	z-index: 1000;
 	text-align: center;
 	cursor: pointer;
 
@@ -246,7 +248,7 @@ $blue: #007ddb;
 
 .timeline-entry:first-of-type,
 .timeline-entry:last-of-type {
-	pointer-events: none;
+	// pointer-events: none;
 	span {
 		margin-top: 4px !important;
 		color: black;
@@ -289,7 +291,7 @@ $blue: #007ddb;
 		z-index: -1;
 		margin-top: 9.5px;
 		position: absolute;
-		transition: 0.35s ease;
+		transition: 0.6s ease-in-out;
 	}
 
 	.icon {

@@ -5,20 +5,49 @@
 			<transition name="page" mode="out-in" appear>
 				<router-view />
 			</transition>
+			<ErrorPopUp v-if="!getInternetStatus" stay icon="fa-exclamation-triangle"
+				>No internet detected!</ErrorPopUp
+			>
 		</div>
 		<Footer />
 	</div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import Navbar from '@/components/layout/Navbar.vue';
+import ErrorPopUp from '@/components/ErrorPopUp.vue';
 import Footer from '@/components/layout/Footer.vue';
 
 export default {
 	name: 'App',
 	components: {
 		Navbar,
+		ErrorPopUp,
 		Footer,
+	},
+	computed: {
+		...mapGetters(['getInternetStatus']),
+	},
+	methods: {
+		...mapActions(['changeInternetStatus']),
+		updateOnlineStatus(e) {
+			const { type } = e;
+
+			if (type === 'online') {
+				this.changeInternetStatus(true);
+			} else {
+				this.changeInternetStatus(false);
+			}
+		},
+	},
+	mounted() {
+		window.addEventListener('online', this.updateOnlineStatus);
+		window.addEventListener('offline', this.updateOnlineStatus);
+	},
+	beforeUnmount() {
+		window.removeEventListener('online', this.updateOnlineStatus);
+		window.removeEventListener('offline', this.updateOnlineStatus);
 	},
 };
 </script>

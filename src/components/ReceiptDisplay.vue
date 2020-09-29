@@ -81,6 +81,16 @@ export default {
 		},
 	},
 	created() {
+		if (this.getSelectedDrinks.length === 0) {
+			this.$emit('error', 'Please choose at least one drink');
+			this.$router.push('/order/drinks');
+		}
+
+		if (this.getDish.idMeal === undefined) {
+			this.$emit('error', 'Please choose a dish');
+			this.$router.push('/order/dish');
+		}
+
 		this.changeStep(5);
 	},
 	updated() {

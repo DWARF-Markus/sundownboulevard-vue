@@ -23,14 +23,24 @@ const actions = {
 		)
 			.then((res) => res.json())
 			.then((data) => {
-				const parsed = JSON.stringify(data[0].meals[0]);
+				const currentDishArr = JSON.parse(localStorage.getItem('dishes'));
+				const meal = data[0].meals[0];
 
-				const id = data[0].meals[0].idMeal;
+				const currentDishArrIds = [];
 
-				if (localStorage.getItem(`dish-${id}`)) {
-					localStorage.setItem(`dish-${id}`, [parsed]);
+				if (currentDishArr == null) {
+					const newDishArr = [];
+
+					newDishArr.push(meal);
+					localStorage.setItem('dishes', JSON.stringify(newDishArr));
 				} else {
-					localStorage.setItem(`dish-${id}`, [parsed]);
+					currentDishArr.map((dish) => {
+						currentDishArrIds.push(parseInt(dish.idMeal));
+					});
+					if (!currentDishArrIds.includes(parseInt(meal.idMeal))) {
+						currentDishArr.push(meal);
+						localStorage.setItem('dishes', JSON.stringify(currentDishArr));
+					}
 				}
 
 				setTimeout(() => {
@@ -40,19 +50,7 @@ const actions = {
 			});
 	},
 	fetchLocalStorageDish({ commit }) {
-		let localStorageDishes = [];
-
-		for (let dish in localStorage) {
-			if (dish.includes('dish-')) {
-				localStorageDishes.push(dish);
-			}
-		}
-
-		const localStorageDishesObjs = localStorageDishes.map((dish) => {
-			return JSON.parse(localStorage.getItem(dish));
-		});
-
-		console.log(localStorageDishesObjs);
+		const localStorageDishesObjs = JSON.parse(localStorage.getItem('dishes'));
 
 		commit(
 			'setDish',

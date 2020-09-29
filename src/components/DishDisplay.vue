@@ -7,9 +7,12 @@
     </p>
     <div
       class="dish-display-container mt-1"
-      :class="{ 'dish-display-container--loading': getDishLoading }"
+      :class="{ 'dish-display-container--loading': !isDishImageLoaded }"
     >
-      <div class="dish-display-desc p-1" :class="{ 'dish-display-desc--loading': getDishLoading }">
+      <div
+        class="dish-display-desc p-1"
+        :class="{ 'dish-display-desc--loading': !isDishImageLoaded }"
+      >
         <h3 class="logo-text blue-text">{{ getDish.strCategory }}</h3>
         <h1 class="mt-1">{{ getDish.strMeal }}</h1>
         <p class="mt-1">{{ getDish.strInstructions }}</p>
@@ -50,21 +53,23 @@ export default {
   data() {
     return {
       isDishImageLoaded: false,
-      onLine: navigator.onLine,
-      networkOff: false,
       showCarrot: false
     };
   },
   computed: {
-    ...mapGetters(["getBookingType", "getDish", "getDishLoading"])
+    ...mapGetters([
+      "getBookingType",
+      "getDish",
+      "getDishLoading",
+      "getInternetStatus"
+    ])
   },
   methods: {
     ...mapActions(["fetchDish", "changeStep", "fetchLocalStorageDish"]),
     handleNewDish() {
       this.isDishImageLoaded = false;
-      if (this.onLine) {
+      if (this.getInternetStatus) {
         this.fetchDish();
-        this.isDishImageLoaded = false;
       } else {
         this.fetchLocalStorageDish();
       }
@@ -72,16 +77,12 @@ export default {
     dishImgLoaded(load) {
       console.log(load);
       this.isDishImageLoaded = true;
-    },
-    updateOnlineStatus(e) {
-      const { type } = e;
-      this.onLine = type === "online";
     }
   },
   created() {
     this.changeStep(2);
 
-    if (this.onLine) {
+    if (this.getInternetStatus) {
       if (this.getBookingType === "newBooking") {
         console.log("get new dish");
         this.fetchDish();
@@ -90,25 +91,6 @@ export default {
       console.log("get local dish");
       this.fetchLocalStorageDish();
     }
-
-    // if (!this.isDishImageLoaded) {
-    //   this.showCarrot = true;
-    // }
-  },
-  watch: {
-    onLine(v) {
-      if (v) {
-        this.networkOff = true;
-      }
-    }
-  },
-  mounted() {
-    window.addEventListener("online", this.updateOnlineStatus);
-    window.addEventListener("offline", this.updateOnlineStatus);
-  },
-  beforeUnmount() {
-    window.removeEventListener("online", this.updateOnlineStatus);
-    window.removeEventListener("offline", this.updateOnlineStatus);
   }
 };
 </script>
