@@ -1,5 +1,8 @@
 <template>
-  <footer class="black white-text" :class="{ 'padding-bottom' : getStep !== 1 }">
+  <footer
+    class="footer white-text"
+    :class="{ 'padding-bottom' : getStep !== 1, 'footer--dark' : getDarkMode }"
+  >
     <div class="pt-2">
       <p class="footer-title mt-1">LINKS</p>
       <ul>
@@ -51,7 +54,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Footer",
   computed: {
-    ...mapGetters("getStep")
+    ...mapGetters(["getStep", "getDarkMode"])
   }
 };
 </script>
@@ -61,7 +64,8 @@ export default {
   padding-bottom: 80px;
 }
 
-footer {
+.footer {
+  background-color: #393939;
   height: auto;
   display: grid;
   order: 1;
@@ -88,6 +92,10 @@ footer {
         }
       }
     }
+  }
+
+  &--dark {
+    background-color: #222222;
   }
 }
 

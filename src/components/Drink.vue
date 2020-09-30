@@ -1,5 +1,5 @@
 <template>
-  <div class="drink-entry" :class="{ selected: isSelected }">
+  <div class="drink-entry" :class="{ selected: isSelected, 'drink-entry--dark' : getDarkMode }">
     <div class="drink-selected-container" :class="{ hidden: !isSelected }">
       <div class="drink-selected-amount">
         <span @click="handleDecrease" class="remove-btn">-</span>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Drink",
@@ -51,6 +51,9 @@ export default {
       this.networkOff = true;
       this.imageIsLoaded = true;
     }
+  },
+  computed: {
+    ...mapGetters(["getDarkMode"])
   },
   methods: {
     ...mapActions(["incrementDrink", "decreaseDrink"]),
@@ -116,6 +119,20 @@ export default {
       transition: 10s;
       animation: spin-animation 0.8s infinite;
       animation-timing-function: linear;
+    }
+  }
+
+  &--dark {
+    border: 3px solid #363636;
+    background-color: #ebebeb09;
+
+    div {
+      div {
+        .remove-btn,
+        .add-btn {
+          color: white !important;
+        }
+      }
     }
   }
 }

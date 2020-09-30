@@ -1,6 +1,9 @@
 <template>
   <div class="timeline-banner-container">
-    <div class="mobile-timeline-banner blue px-1">
+    <div
+      class="mobile-timeline-banner px-1"
+      :class="{ 'mobile-timeline-banner--dark'  : getDarkMode }"
+    >
       <div class="back-button">
         <Button @click="handleHomeClick">
           <i class="fa fa-chevron-left"></i>
@@ -12,7 +15,7 @@
         <span>5</span>
       </h4>
     </div>
-    <div class="desktop-wrapper">
+    <div class="desktop-wrapper" :class="{'desktop-wrapper--dark' : getDarkMode}">
       <div class="timeline-container">
         <transition name="fade">
           <div class="timeline">
@@ -96,7 +99,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getStep", "getSelectedDrinks", "getSidebarActive"]),
+    ...mapGetters([
+      "getStep",
+      "getSelectedDrinks",
+      "getSidebarActive",
+      "getDarkMode"
+    ]),
     getWidth() {
       return (this.getStep - 1) * 25;
     }
@@ -305,10 +313,21 @@ $blue: #007ddb;
 
 .mobile-timeline-banner {
   display: grid;
+  background-color: #007ddb;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
   height: 50px;
   align-items: center;
+
+  &--dark {
+    background-color: #393939;
+
+    div {
+      button {
+        background-color: #393939;
+      }
+    }
+  }
 
   h4 {
     font-size: 10px;
@@ -421,6 +440,41 @@ $blue: #007ddb;
 
 .desktop-wrapper {
   display: none;
+
+  &--dark {
+    .timeline-container {
+      background-color: #222222;
+      div {
+        div {
+          .icons {
+            .timeline-entry {
+              background-color: #222222;
+              .icon {
+                i {
+                  background-color: #222222;
+                  color: white !important;
+                }
+              }
+              .title {
+                span {
+                  color: white !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .banner-wrapper {
+      background: radial-gradient(
+        circle,
+        rgba(27, 27, 27, 0.776) 0%,
+        rgba(80, 80, 80, 0.846) 0%,
+        rgba(24, 24, 24, 0.762) 130%
+      );
+    }
+  }
 }
 
 @keyframes slidein {

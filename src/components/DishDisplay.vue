@@ -1,7 +1,10 @@
 <template>
   <div>
-    <p class="loader-text" :class="{ 'loader-text--loading': getDishLoading }">
-      <i class="fa fa-spinner blue-text"></i>
+    <p
+      class="loader-text"
+      :class="{ 'loader-text--loading': getDishLoading, 'loader-text--dark' : getDarkMode }"
+    >
+      <i class="fa fa-spinner"></i>
       <br />
       <span>Loading new dish</span>
     </p>
@@ -17,6 +20,7 @@
         <h1 class="mt-1">{{ getDish.strMeal }}</h1>
         <p class="mt-1">{{ getDish.strInstructions }}</p>
         <Button
+          :darkMode="getDarkMode"
           :class="{ hidden: getDishLoading }"
           @click="handleNewDish"
           icon="fa-carrot"
@@ -56,16 +60,23 @@ export default {
       "getBookingType",
       "getDish",
       "getDishLoading",
-      "getInternetStatus"
+      "getInternetStatus",
+      "getDarkMode"
     ])
   },
   methods: {
-    ...mapActions(["fetchDish", "changeStep", "fetchLocalStorageDish"]),
+    ...mapActions([
+      "fetchDish",
+      "changeStep",
+      "fetchLocalStorageDish",
+      "fetchDrinks"
+    ]),
     handleNewDish() {
       this.isDishImageLoaded = false;
       if (this.getInternetStatus) {
         this.fetchDish();
       } else {
+        this.isDishImageLoaded = true;
         this.fetchLocalStorageDish();
       }
     },
@@ -82,9 +93,12 @@ export default {
       if (this.getBookingType === "newBooking") {
         console.log("get new dish");
         this.fetchDish();
+      } else {
+        this.fetchDrinks();
       }
     } else {
       console.log("get local dish");
+      this.isDishImageLoaded = true;
       this.fetchLocalStorageDish();
     }
   }
@@ -144,6 +158,7 @@ export default {
   img {
     width: 100%;
     transition: 1.2s ease-in;
+    border-radius: 5px;
   }
 }
 
@@ -155,8 +170,12 @@ export default {
   left: 0;
   opacity: 0;
   top: 50vh;
-  color: #007ddb;
+  // color: #007ddb;
   transition: 0.15s ease-in-out;
+
+  &--dark {
+    color: white !important;
+  }
 
   @keyframes spin-animation {
     0% {

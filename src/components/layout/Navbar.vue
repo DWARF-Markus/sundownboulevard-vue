@@ -1,14 +1,15 @@
 <template>
   <div id="nav">
-    <nav class="navbar-container white">
+    <nav :class="[ getDarkMode ? 'navbar-container--dark' : 'white' ]" class="navbar-container">
       <div class="navbar-wrapper">
         <div class="navbar-logo" @click="handleHomeClick">
-          <img src="../../assets/beach.svg" />
-          <p class="logo-text">SUNDOWN BOULEVARD - VUE</p>
+          <img v-if="!getDarkMode" src="../../assets/beach.svg" />
+          <img v-else src="../../assets/beach-blackwhite.svg" />
+          <p :class="{ 'logo-text--dark' : getDarkMode }" class="logo-text">SUNDOWN BOULEVARD - VUE</p>
         </div>
         <div class="navbar-mobile-menu">
           <div
-            v-bind:class="{ 'nav-active': active }"
+            v-bind:class="{ 'nav-active': active, 'nav-mobile-bars--dark' : getDarkMode }"
             class="nav-mobile-bars"
             v-on:click="toggleNav"
           >
@@ -17,7 +18,7 @@
             <div class="bar3" />
           </div>
         </div>
-        <div class="nav-links">
+        <div :class="{ 'nav-links--dark' : getDarkMode }" class="nav-links">
           <ul>
             <li class="nav-entry nav-active pt-1 mx-1">
               <router-link to="/">BOOK</router-link>
@@ -38,24 +39,27 @@
           </ul>
         </div>
       </div>
-      <div v-bind:class="{ 'nav-active': active }" class="nav-mobile-links white px-1">
-        <h1 class="logo-text mt-1">SUNDOWN BOULEVARD</h1>
+      <div
+        v-bind:class="{ 'nav-active': active, 'nav-active--dark' : getDarkMode, 'white' : !getDarkMode }"
+        class="nav-mobile-links px-1"
+      >
+        <h1 :class="{ 'logo-text--dark' : getDarkMode }" class="logo-text mt-1">SUNDOWN BOULEVARD</h1>
         <ul v-on:click="toggleNav">
           <li class="nav-mobile-entry nav-active pt-1">
             <router-link to="/">BOOK</router-link>
           </li>
           <li class="nav-mobile-entry pt-1">
-            <a class="black-text" href="#!">
+            <a href="#!">
               <router-link to="/globalstate">NEWSLETTER</router-link>
             </a>
           </li>
           <li class="nav-mobile-entry pt-1">
-            <a class="black-text" href="#!">
+            <a href="#!">
               <router-link to="/newtimeline">PRODUCTS</router-link>
             </a>
           </li>
           <li class="nav-mobile-entry pt-1">
-            <a class="black-text" href="#!">RESTAURANTS</a>
+            <a href="#!">RESTAURANTS</a>
           </li>
         </ul>
       </div>
@@ -64,12 +68,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Navbar",
   data() {
     return {
       active: false
     };
+  },
+  computed: {
+    ...mapGetters(["getDarkMode"])
   },
   methods: {
     toggleNav() {
@@ -91,10 +100,22 @@ export default {
   width: 100%;
   z-index: 200;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.137);
+
+  &--dark {
+    background-color: #222222;
+  }
 }
 
 .nav-links {
   display: none;
+
+  &--dark {
+    .nav-entry {
+      a {
+        color: white !important;
+      }
+    }
+  }
 }
 
 .navbar-wrapper {
@@ -140,11 +161,18 @@ export default {
     margin: 3px 0 0;
     transition: 0.15s ease;
   }
+
+  &--dark {
+    .bar1,
+    .bar2,
+    .bar3 {
+      background-color: white;
+    }
+  }
 }
 
 .nav-mobile-bars.nav-active {
   .bar1 {
-    background-color: #ba2329;
     transform: translateY(6px) rotate(45deg);
     -webkit-transform: translateY(6px) rotate(45deg);
   }
@@ -152,7 +180,6 @@ export default {
     opacity: 0;
   }
   .bar3 {
-    background-color: #ba2329;
     transform: translateY(-6px) rotate(-45deg);
     -webkit-transform: translateY(-6px) rotate(-45deg);
   }
@@ -178,10 +205,29 @@ export default {
 .nav-mobile-links ul,
 .nav-links ul {
   list-style: none;
+  &--dark {
+    li {
+      a {
+        color: white !important;
+      }
+    }
+  }
 }
 
 .nav-mobile-links.nav-active {
   max-height: 100vh;
+}
+
+.nav-active--dark {
+  background-color: #222222;
+
+  ul {
+    li {
+      a {
+        color: white;
+      }
+    }
+  }
 }
 
 .nav-mobile-entry {
@@ -232,9 +278,6 @@ export default {
 
   .nav-entry.nav-active {
     font-weight: 800;
-    a {
-      color: #ba2329 !important;
-    }
   }
 
   .navbar-logo img {

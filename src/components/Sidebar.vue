@@ -1,10 +1,14 @@
 <template>
-  <div @click="toggleSidebar" :class="{ 'order-sidebar--open' : open }" class="order-sidebar">
+  <div
+    @click="toggleSidebar"
+    :class="{ 'order-sidebar--open' : open, 'order-sidebar--dark' : getDarkMode }"
+    class="order-sidebar"
+  >
     <i class="fa" :class="{'fa-shopping-cart blue-text' : !open, 'fa-times white-text' : open}" />
     <h3 class="px-1" :class="{'order-sidebar--no-transition' : !open}">YOUR CART</h3>
     <div
       class="order-sidebar-content"
-      :class="{ 'order-sidebar-content--show' : open, 'order-sidebar-content--no-transition' : !open }"
+      :class="{ 'order-sidebar-content--show' : open, 'order-sidebar-content--no-transition' : !open, 'order-sidebar-content--dark' : getDarkMode }"
     >
       <div class="order-sidebar-dish">
         <h4>Dish</h4>
@@ -64,21 +68,26 @@ export default {
       "getDrinks",
       "getSelectedDrinks",
       "getDish",
-      "getPeopleAmount"
+      "getPeopleAmount",
+      "getDarkMode"
     ]),
     drinksSummary() {
-      return this.getSelectedDrinks.reduce((acc, cur) => {
-        const drink = this.getDrinks[cur - 1];
-        const index = acc.findIndex(entry => entry.id === drink.id);
+      if (this.getDrinks.length > 0) {
+        return this.getSelectedDrinks.reduce((acc, cur) => {
+          const drink = this.getDrinks[cur - 1];
+          const index = acc.findIndex(entry => entry.id === drink.id);
 
-        if (index === -1) {
-          acc.push({ id: drink.id, name: drink.name, amount: 1 });
-        } else {
-          acc[index].amount += 1;
-        }
+          if (index === -1) {
+            acc.push({ id: drink.id, name: drink.name, amount: 1 });
+          } else {
+            acc[index].amount += 1;
+          }
 
-        return acc;
-      }, []);
+          return acc;
+        }, []);
+      } else {
+        return [];
+      }
     }
   }
 };
@@ -153,10 +162,22 @@ export default {
     transition: none !important;
   }
 
+  &--dark {
+    background: #393939 !important;
+
+    i {
+      color: white !important;
+    }
+
+    &:hover {
+      background: #393939;
+    }
+  }
+
   &--open {
-    background: white;
     box-shadow: none;
     align-items: right;
+    background: #007ddb;
     border-radius: 0%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -164,7 +185,6 @@ export default {
     max-width: none;
     right: 5px;
     justify-content: right;
-    background: #007ddb;
 
     h3 {
       opacity: 1;
@@ -178,19 +198,42 @@ export default {
   }
 
   .order-sidebar-content {
-    position: absolute;
     background: white;
+    position: absolute;
     width: 100%;
     overflow: hidden;
     max-height: 0;
     z-index: 100;
     top: 2.5rem;
-    transition: 0.5s ease-in-out;
+    transition: 0.4s ease-in-out;
     box-shadow: 0px 4px 5px rgba(22, 22, 22, 0.219);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     opacity: 0;
     padding: 0.7rem 0.3rem;
+
+    &--dark {
+      background: #393939;
+
+      .order-sidebar-dish {
+        .dish-list {
+          p {
+            span {
+              color: white;
+            }
+          }
+        }
+        .drinks-list {
+          .drinks-list-entry {
+            p {
+              span {
+                color: white;
+              }
+            }
+          }
+        }
+      }
+    }
 
     .order-sidebar-dish {
       margin: 0 0 0.8rem 0;
@@ -247,7 +290,6 @@ export default {
       span {
         font-size: 11px;
         font-weight: 100;
-        color: rgb(36, 36, 36);
       }
     }
   }

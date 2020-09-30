@@ -8,19 +8,22 @@
         random dish from our massive menu, and we will make sure it will be
         unforgettable.
       </p>
-      <Button @click="handleNewBooking" secondary big>BOOK</Button>
+      <Button :darkMode="getDarkMode" @click="handleNewBooking" secondary big>BOOK</Button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Button from "@/components/Button.vue";
 
 export default {
   name: "SliderText",
   components: {
     Button
+  },
+  computed: {
+    ...mapGetters(["getDarkMode"])
   },
   methods: {
     ...mapActions(["changeType", "changeStep", "clearDrinks"]),
