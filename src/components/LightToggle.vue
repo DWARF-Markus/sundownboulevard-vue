@@ -4,7 +4,8 @@
     :class="[ getDarkMode ? 'light-toggle-container--dark' : 'light-toggle-container--light' ]"
     class="light-toggle-container"
   >
-    <i class="fa fa-lightbulb blue-text" />
+    <i v-if="getDarkMode" class="fa fa-moon" />
+    <i v-else class="fa fa-sun blue-text" />
   </div>
 </template>
 
@@ -46,7 +47,7 @@ export default {
   left: 5px;
   width: 2.5rem;
   height: 2.5rem;
-  padding: 0.7rem 0.9rem;
+  padding: 0.7rem 0.8rem;
   align-items: center;
   box-shadow: 3px 4px 4px rgba(22, 22, 22, 0.11);
   z-index: 200;
